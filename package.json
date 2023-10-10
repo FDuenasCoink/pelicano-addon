@@ -1,0 +1,43 @@
+{
+  "name": "@fduenascoink/pelicano-addon",
+  "version": "1.0.0",
+  "description": "Addons to control oink pelicano in javascript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FDuenasCoink/pelicano-addon.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "gypfile": true,
+  "scripts": {
+    "install": "node-gyp-build",
+    "rebuild": "node-gyp rebuild",
+    "prebuildify-cross": "prebuildify-cross --napi --strip",
+    "prebuildify": "prebuildify --napi --strip",
+    "clean": "node-gyp clean",
+    "build": "tsc",
+    "test": "exit 0"
+  },
+  "publishConfig": {
+    "@fduenascoink:registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [
+    "oink",
+    "hardware",
+    "pelicano"
+  ],
+  "author": "Fabian David Dueñas",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "node-gyp": "^9.4.0",
+    "prebuildify": "^5.0.1",
+    "prebuildify-cross": "^5.0.0",
+    "shx": "^0.3.4",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "node-addon-api": "^7.0.0",
+    "node-gyp-build": "^4.6.1"
+  }
+}

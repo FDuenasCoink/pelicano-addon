@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+      "target": "ES2019",
+      "module": "CommonJS",
+      "strict": true,
+      "downlevelIteration": true,
+      "noImplicitReturns": true,
+      "noEmitOnError": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "sourceMap": true,
+      "declaration": true,
+      "outDir": "dist"
+  },
+  "include": [
+      "tsc"
+  ]
+}

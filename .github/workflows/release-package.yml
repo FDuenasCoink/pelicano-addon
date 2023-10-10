@@ -1,0 +1,60 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  prebuild:
+    strategy:
+      matrix:
+        include:
+          - name: darwin
+            os: macos-11
+            node: x64
+            command: prebuildify
+            args: --arch x64+arm64
+#          - name: linux-arm
+#           os: ubuntu-20.04
+#           command: prebuildify-cross
+#           args: -i linux-arm64-lts -i linux-armv7 -i linux-armv6
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - if: matrix.node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          architecture: ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - run: npm ci --ignore-scripts
+      - run: npm run ${{ matrix.command }} -- ${{ matrix.args }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: prebuilds/
+          if-no-files-found: error
+      - if: failure()
+        run: npx shx ls -lA
+  release:
+    needs: prebuild
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+          path: prebuilds
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
