@@ -241,7 +241,7 @@ Napi::Value Pelicano::OnCoin(const Napi::CallbackInfo &info)
 
   auto finishFn = [] (const Napi::CallbackInfo& info) {
     isRunningPelicano = false;
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(30));
     return;
   };
 

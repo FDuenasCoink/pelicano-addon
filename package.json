@@ -1,6 +1,6 @@
 {
   "name": "@fduenascoink/pelicano-addon",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Addons to control oink pelicano in javascript",
   "repository": {
     "type": "git",
