@@ -3,7 +3,6 @@
 std::thread nativeThreadPelicano;
 Napi::ThreadSafeFunction tsfnPelicano;
 static bool isRunningPelicano = true;
-static bool threadEndedPelicano = true;
 
 Napi::FunctionReference Pelicano::constructor;
 
@@ -229,23 +228,20 @@ Napi::Value Pelicano::OnCoin(const Napi::CallbackInfo &info)
       delete coin;
     };
     isRunningPelicano = true;
-    threadEndedPelicano = false;
     while (isRunningPelicano) {
-      std::this_thread::sleep_for( std::chrono::milliseconds(10));
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
       CoinError_t response = this->pelicanoControl_->GetCoin();
       if (response.StatusCode == 303) continue;
       CoinError_t *value = new CoinError_t(response);
       napi_status status = tsfnPelicano.BlockingCall(value, callback);
       if ( status != napi_ok ) break;
     }
-    threadEndedPelicano = true;
     tsfnPelicano.Release();
   });
 
   auto finishFn = [] (const Napi::CallbackInfo& info) {
     isRunningPelicano = false;
-    while (!threadEndedPelicano);
-    std::this_thread::sleep_for( std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     return;
   };
 
