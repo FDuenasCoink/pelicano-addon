@@ -1,6 +1,6 @@
 {
     "targets": [{
-        "target_name": "oink-addons",
+        "target_name": "pelicano-addon",
         'cflags!': [
             '-fno-exceptions'
         ],
